@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/amirhosein-kia-darbandsary/khodro85/api/middlewares"
 	"github.com/amirhosein-kia-darbandsary/khodro85/api/routers"
 	"github.com/amirhosein-kia-darbandsary/khodro85/api/validations"
 	"github.com/amirhosein-kia-darbandsary/khodro85/config"
@@ -17,7 +18,8 @@ func InitServer() {
 	if ok {
 		val.RegisterValidation("iranian_mobile", validations.ValidateIranianMobileNumber)
 	}
-	router.Use(gin.Logger(), gin.Recovery())
+
+	router.Use(gin.Logger(), gin.Recovery(), middlewares.RateLimitter())
 
 	v1 := router.Group("/api/v1/")
 	{
