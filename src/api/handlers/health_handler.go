@@ -16,6 +16,3 @@ func NewHealthHandler() *Health {
 func (h *Health) GetHealth(ctx *gin.Context) {
 	ctx.JSON(http.StatusAccepted, "worked")
 }
-func (h *Health) PostHealth(ctx *gin.Context) {
-	ctx.JSON(http.StatusAccepted, "worked")
-}

@@ -18,6 +18,7 @@ type Config struct {
 	AppName     string
 	Debug       bool
 	Environment string
+	PORT        string
 }
 
 type PostgresConfig struct {
@@ -89,6 +90,7 @@ func GetConfig() Config {
 		AppName:     os.Getenv("APP_NAME"),
 		Debug:       getBoolEnv("DEBUG"),
 		Environment: os.Getenv("ENVIRONMENT"),
+		PORT:        os.Getenv("PORT"),
 	}
 }
 

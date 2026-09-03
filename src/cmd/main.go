@@ -1,13 +1,9 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/amirhosein-kia-darbandsary/khodro85/config"
-)
+import "github.com/amirhosein-kia-darbandsary/khodro85/api"
 
 func main() {
-	// api.InitServer()
-	config := config.GetConfig()
-	fmt.Println(config)
+	api.InitServer()
+	// config := config.GetConfig()
+	// fmt.Println(config)
 }
