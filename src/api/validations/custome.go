@@ -1,21 +1,32 @@
 package validations
 
 import (
-	"log"
-	"regexp"
+	"errors"
 
-	"github.com/amirhosein-kia-darbandsary/khodro85/constants"
 	"github.com/go-playground/validator/v10"
 )
 
-func ValidateIranianMobileNumber(fid validator.FieldLevel) bool {
-	value, ok := fid.Field().Interface().(string)
-	if !ok {
-		return false
+type ValidationError struct {
+	Property string `json:"property"`
+	Tag      string `json:"tag"`
+	Value    string `json:"value"`
+	Message  string `json:"message"`
+}
+
+func ErrorValidation(err error) *[]ValidationError {
+	var validationErrors []ValidationError
+	var ve validator.ValidationErrors
+
+	if errors.As(err, &ve) {
+		for _, err := range err.(validator.ValidationErrors) {
+			var el ValidationError
+			el.Property = err.Field()
+			el.Tag = err.Tag()
+			el.Value = err.Param()
+			validationErrors = append(validationErrors, el)
+		}
+		return &validationErrors
+
 	}
-	res, err := regexp.MatchString(constants.MOBILEVALIDATION, value)
-	if err != nil {
-		log.Print(err.Error())
-	}
-	return res
+	return nil
 }

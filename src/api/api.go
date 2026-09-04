@@ -15,8 +15,10 @@ func InitServer() {
 
 	router := gin.New()
 	val, ok := binding.Validator.Engine().(*validator.Validate)
+
 	if ok {
 		val.RegisterValidation("iranian_mobile", validations.ValidateIranianMobileNumber)
+		val.RegisterValidation("password", validations.PasswordValidator)
 	}
 
 	router.Use(gin.Logger(), gin.Recovery(), middlewares.RateLimitter())
