@@ -1,3 +1,8 @@
+// @title           Khodro85 API
+// @version         1.0
+// @description     REST API for Khodro85.
+// @host            localhost:9090
+// @BasePath        /api/v1
 package main
 
 import (

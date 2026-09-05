@@ -53,7 +53,7 @@ func GetConfig() Config {
 	// Load .env for local development.
 	// In production, environment variables can come directly
 	// from Docker, Kubernetes, the OS, etc.
-	err := godotenv.Load("src/.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Println(err)
 		panic("Can't Load env file..")
