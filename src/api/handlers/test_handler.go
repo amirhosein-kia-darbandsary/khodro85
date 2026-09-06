@@ -4,7 +4,9 @@ import (
 	"net/http"
 
 	"github.com/amirhosein-kia-darbandsary/khodro85/api/base"
+	"github.com/amirhosein-kia-darbandsary/khodro85/config"
 	_ "github.com/amirhosein-kia-darbandsary/khodro85/docs"
+	"github.com/amirhosein-kia-darbandsary/khodro85/pkg/logging"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +22,9 @@ type User struct {
 func NewTest() *Test {
 	return &Test{}
 }
+
+var cfg = config.GetConfig()
+var logger = logging.NewLogger(&cfg)
 
 // TestHandler godoc
 // @Summary      Test handler
@@ -56,6 +61,7 @@ func (t *Test) TestBindingHandler(ctx *gin.Context) {
 				err,
 			),
 		)
+		logger.Error(logging.Internal, logging.Api, err.Error(), nil)
 	}
 
 	ctx.JSON(

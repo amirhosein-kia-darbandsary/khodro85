@@ -10,11 +10,11 @@ import (
 )
 
 type Config struct {
-	Postgres PostgresConfig
-	Redis    RedisConfig
-	JWT      JWTConfig
-	CORS     CORSConfig
-
+	Postgres    PostgresConfig
+	Redis       RedisConfig
+	JWT         JWTConfig
+	CORS        CORSConfig
+	Logging     LoggingConfig
 	AppName     string
 	Debug       bool
 	Environment string
@@ -47,6 +47,12 @@ type CORSConfig struct {
 	AllowCredentials []string
 	AllowMethods     []string
 	AllowHeaders     []string
+}
+
+type LoggingConfig struct {
+	FilePath string
+	Endoding string
+	Level    string
 }
 
 func GetConfig() Config {
@@ -86,7 +92,11 @@ func GetConfig() Config {
 			AllowMethods:     getSliceEnv("CORS__ALLOW_METHODS"),
 			AllowHeaders:     getSliceEnv("CORS__ALLOW_HEADERS"),
 		},
-
+		Logging: LoggingConfig{
+			FilePath: os.Getenv("LOGGER_FILEPATH"),
+			Endoding: os.Getenv("LOGGER_ENCODING"),
+			Level:    os.Getenv("LOGGER_LEVEL"),
+		},
 		AppName:     os.Getenv("APP_NAME"),
 		Debug:       getBoolEnv("DEBUG"),
 		Environment: os.Getenv("ENVIRONMENT"),

@@ -1,10 +1,10 @@
 package validations
 
 import (
-	"log"
 	"regexp"
 
 	"github.com/amirhosein-kia-darbandsary/khodro85/constants"
+	"github.com/amirhosein-kia-darbandsary/khodro85/pkg/logging"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -15,7 +15,7 @@ func ValidateIranianMobileNumber(fid validator.FieldLevel) bool {
 	}
 	res, err := regexp.MatchString(constants.MOBILEVALIDATION, value)
 	if err != nil {
-		log.Print(err.Error())
+		logger.Error(logging.Category(logging.MobileValidation), logging.MobileValidation, err.Error(), nil)
 	}
 	return res
 }

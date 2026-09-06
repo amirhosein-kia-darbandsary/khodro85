@@ -6,11 +6,15 @@ import (
 	"time"
 
 	"github.com/amirhosein-kia-darbandsary/khodro85/config"
+	"github.com/amirhosein-kia-darbandsary/khodro85/pkg/logging"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var PostgressConnection *gorm.DB
+
+var cfg = config.GetConfig()
+var logger = logging.NewLogger(&cfg)
 
 func InitPostgres(cfg *config.Config) {
 	dsn := fmt.Sprintf(
@@ -23,7 +27,7 @@ func InitPostgres(cfg *config.Config) {
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to PostgreSQL:", err)
+		logger.Fatal(logging.Postgres, logging.ExternalService, err.Error(), nil)
 	}
 
 	log.Println("PostgreSQL connected successfully")
@@ -41,7 +45,7 @@ func GetPostgresConnection() *gorm.DB {
 func ClosePostgresConnection(connetion *gorm.DB) {
 	sqlDB, err := connetion.DB()
 	if err != nil {
-		log.Fatal("Failed to connect to PostgreSQL:", err)
+		logger.Fatal(logging.Postgres, logging.ExternalService, err.Error(), nil)
 
 	}
 	sqlDB.Close()
