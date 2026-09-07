@@ -23,7 +23,7 @@ func InitServer(cfg *config.Config) {
 		val.RegisterValidation("password", validations.PasswordValidator)
 	}
 
-	router.Use(gin.Logger(), gin.Recovery(), middlewares.RateLimitter())
+	router.Use(gin.Logger(), gin.Recovery(), middlewares.RateLimitter(), middlewares.DefaultStructuredLogger(cfg))
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := router.Group("/api/v1/")
