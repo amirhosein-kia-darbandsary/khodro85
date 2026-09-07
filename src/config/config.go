@@ -53,6 +53,7 @@ type LoggingConfig struct {
 	FilePath string
 	Endoding string
 	Level    string
+	Type     string	
 }
 
 func GetConfig() Config {
@@ -96,6 +97,7 @@ func GetConfig() Config {
 			FilePath: os.Getenv("LOGGER_FILEPATH"),
 			Endoding: os.Getenv("LOGGER_ENCODING"),
 			Level:    os.Getenv("LOGGER_LEVEL"),
+			Type:     os.Getenv("LOGGER_TYPE"),
 		},
 		AppName:     os.Getenv("APP_NAME"),
 		Debug:       getBoolEnv("DEBUG"),

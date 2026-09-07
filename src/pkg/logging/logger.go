@@ -22,5 +22,12 @@ type Logger interface {
 }
 
 func NewLogger(cfg *config.Config) Logger {
-	return NewZapLogger(cfg)
+	if cfg.Logging.Type == "zaplog" {
+		return NewZapLogger(cfg)
+	} else if cfg.Logging.Type == "zerolog" {
+		return newZeroLogger(cfg)
+	} else {
+		return newZeroLogger(cfg)
+	}
+
 }
