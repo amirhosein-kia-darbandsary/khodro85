@@ -10,12 +10,14 @@ import (
 	"github.com/amirhosein-kia-darbandsary/khodro85/config"
 	"github.com/amirhosein-kia-darbandsary/khodro85/data/cache"
 	"github.com/amirhosein-kia-darbandsary/khodro85/data/database"
+	"github.com/amirhosein-kia-darbandsary/khodro85/data/database/migrations"
 )
 
 func main() {
 	config := config.GetConfig()
 	cache.InitRedis(&config)
 	database.InitPostgres(&config)
+	migrations.Up00()
 	api.InitServer(&config)
 	// config := config.GetConfig()
 	// fmt.Println(config)

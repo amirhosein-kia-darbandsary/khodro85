@@ -35,6 +35,7 @@ func InitPostgres(cfg *config.Config) {
 	sqlDb.SetMaxIdleConns(10)
 	sqlDb.SetMaxOpenConns(100)
 	sqlDb.SetConnMaxLifetime(time.Second * 180)
+	PostgressConnection = db
 
 }
 
