@@ -86,9 +86,87 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/send-otp/": {
+            "post": {
+                "description": "Send OTP code to the user's mobile number",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Send OTP",
+                "parameters": [
+                    {
+                        "description": "OTP request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetOtpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "base.BaseHttpResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "result": {},
+                "resultcode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "validationErrors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/validations.ValidationError"
+                    }
+                }
+            }
+        },
+        "dto.GetOtpRequest": {
+            "type": "object",
+            "required": [
+                "mobileNumber"
+            ],
+            "properties": {
+                "mobileNumber": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11
+                }
+            }
+        },
         "handlers.User": {
             "type": "object",
             "required": [
@@ -117,6 +195,23 @@ const docTemplate = `{
                     "minLength": 11
                 }
             }
+        },
+        "validations.ValidationError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
@@ -131,8 +226,7 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "REST API for Khodro85.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	// LeftDelim:        "{{",
-	// RightDelim:       "}}",
+
 }
 
 func init() {

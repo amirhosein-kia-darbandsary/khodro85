@@ -30,8 +30,10 @@ func InitServer(cfg *config.Config) {
 	{
 		health_router := v1.Group("health")
 		test_router := v1.Group("test")
+		user_router := v1.Group("user")
 		routers.Health(health_router)
 		routers.Test(test_router)
+		routers.User(user_router, cfg)
 
 	}
 

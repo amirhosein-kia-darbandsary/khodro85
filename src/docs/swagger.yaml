@@ -1,5 +1,27 @@
 basePath: /api/v1
 definitions:
+  base.BaseHttpResponse:
+    properties:
+      error: {}
+      result: {}
+      resultcode:
+        type: integer
+      success:
+        type: boolean
+      validationErrors:
+        items:
+          $ref: '#/definitions/validations.ValidationError'
+        type: array
+    type: object
+  dto.GetOtpRequest:
+    properties:
+      mobileNumber:
+        maxLength: 11
+        minLength: 11
+        type: string
+    required:
+    - mobileNumber
+    type: object
   handlers.User:
     properties:
       entered_password:
@@ -21,6 +43,17 @@ definitions:
     required:
     - first_name
     - last_name
+    type: object
+  validations.ValidationError:
+    properties:
+      message:
+        type: string
+      property:
+        type: string
+      tag:
+        type: string
+      value:
+        type: string
     type: object
 host: localhost:9090
 info:
@@ -77,4 +110,34 @@ paths:
       summary: Test JSON binding
       tags:
       - test
+  /user/send-otp/:
+    post:
+      consumes:
+      - application/json
+      description: Send OTP code to the user's mobile number
+      parameters:
+      - description: OTP request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetOtpRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+      summary: Send OTP
+      tags:
+      - user
 swagger: "2.0"
