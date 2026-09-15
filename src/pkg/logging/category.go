@@ -13,6 +13,7 @@ const (
 	Validation      Category = "Validation"
 	RequestResponse Category = "RequestResponse"
 	Prometheus      Category = "Prometheus"
+	JwtToken        Category = "Jwt"
 )
 
 const (
@@ -40,6 +41,9 @@ const (
 
 	// IO
 	RemoveFile SubCategory = "RemoveFile"
+
+	// Jwt
+	InvalidToken SubCategory = "InvalidToken"
 )
 
 const (
