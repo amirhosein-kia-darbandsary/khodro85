@@ -19,7 +19,7 @@ type TokenService struct {
 }
 
 type TokenDto struct {
-	UserId    string
+	UserId    int
 	FirstName string
 	LastName  string
 	UserName  string
@@ -27,27 +27,27 @@ type TokenDto struct {
 	Roles     []string
 }
 
-func NewTokenService(cfg *config.Config) (TokenService, error) {
+func NewTokenService(cfg *config.Config) TokenService {
 	logger := logging.NewLogger(cfg)
 
 	privateKeyBytes, err := os.ReadFile(cfg.JWT.PrivateKeyPath)
 	if err != nil {
-		return TokenService{}, err
+		return TokenService{}
 	}
 
 	publicKeyBytes, err := os.ReadFile(cfg.JWT.PublicKeyPath)
 	if err != nil {
-		return TokenService{}, err
+		return TokenService{}
 	}
 
 	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM(privateKeyBytes)
 	if err != nil {
-		return TokenService{}, err
+		return TokenService{}
 	}
 
 	publicKey, err := jwt.ParseRSAPublicKeyFromPEM(publicKeyBytes)
 	if err != nil {
-		return TokenService{}, err
+		return TokenService{}
 	}
 
 	return TokenService{
@@ -55,7 +55,7 @@ func NewTokenService(cfg *config.Config) (TokenService, error) {
 		logger:     logger,
 		privateKey: privateKey,
 		publicKey:  publicKey,
-	}, nil
+	}
 }
 
 func (t *TokenService) CreateToken(req TokenDto) (string, error) {
@@ -123,7 +123,7 @@ func (t *TokenService) ValidateToken(tokenString string) (bool, error) {
 			err.Error(),
 			nil,
 		)
- 
+
 		return false, err
 	}
 

@@ -41,7 +41,6 @@ const (
 
 	// IO
 	RemoveFile SubCategory = "RemoveFile"
-
 	// Jwt
 	InvalidToken SubCategory = "InvalidToken"
 )
