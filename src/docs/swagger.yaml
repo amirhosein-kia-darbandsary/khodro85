@@ -22,6 +22,58 @@ definitions:
     required:
     - mobileNumber
     type: object
+  dto.LoginByMobileNumberRequest:
+    properties:
+      mobilenumber:
+        maxLength: 11
+        minLength: 11
+        type: string
+      otp:
+        maxLength: 6
+        minLength: 6
+        type: string
+    required:
+    - mobilenumber
+    - otp
+    type: object
+  dto.LoginByUserNameRequest:
+    properties:
+      mobilenumber:
+        maxLength: 120
+        minLength: 4
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - mobilenumber
+    - password
+    type: object
+  dto.RegisterRequestByUsername:
+    properties:
+      email:
+        minLength: 6
+        type: string
+      firstname:
+        maxLength: 120
+        minLength: 4
+        type: string
+      lastname:
+        maxLength: 180
+        minLength: 10
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        maxLength: 120
+        minLength: 4
+        type: string
+    required:
+    - firstname
+    - password
+    - username
+    type: object
   handlers.User:
     properties:
       entered_password:
@@ -110,6 +162,96 @@ paths:
       summary: Test JSON binding
       tags:
       - test
+  /user/login-by-mobile/:
+    post:
+      consumes:
+      - application/json
+      description: Login to the service by LoginByMobileNumberRequest
+      parameters:
+      - description: login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginByMobileNumberRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+      summary: Register/Login by User Name
+      tags:
+      - user
+  /user/login-by-username/:
+    post:
+      consumes:
+      - application/json
+      description: Login to the service by LoginByUserNameRequest
+      parameters:
+      - description: login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginByUserNameRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+      summary: Login by User Name
+      tags:
+      - user
+  /user/register-by-username/:
+    post:
+      consumes:
+      - application/json
+      description: Login to the service by RegisterRequestByUsername
+      parameters:
+      - description: login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequestByUsername'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/base.BaseHttpResponse'
+      summary: Register by User Name
+      tags:
+      - user
   /user/send-otp/:
     post:
       consumes:

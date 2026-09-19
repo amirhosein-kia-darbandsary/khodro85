@@ -87,6 +87,144 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/login-by-mobile/": {
+            "post": {
+                "description": "Login to the service by LoginByMobileNumberRequest",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register/Login by User Name",
+                "parameters": [
+                    {
+                        "description": "login request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginByMobileNumberRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login-by-username/": {
+            "post": {
+                "description": "Login to the service by LoginByUserNameRequest",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Login by User Name",
+                "parameters": [
+                    {
+                        "description": "login request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginByUserNameRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register-by-username/": {
+            "post": {
+                "description": "Login to the service by RegisterRequestByUsername",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register by User Name",
+                "parameters": [
+                    {
+                        "description": "login request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterRequestByUsername"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/base.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user/send-otp/": {
             "post": {
                 "description": "Send OTP code to the user's mobile number",
@@ -167,6 +305,76 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.LoginByMobileNumberRequest": {
+            "type": "object",
+            "required": [
+                "mobilenumber",
+                "otp"
+            ],
+            "properties": {
+                "mobilenumber": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11
+                },
+                "otp": {
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                }
+            }
+        },
+        "dto.LoginByUserNameRequest": {
+            "type": "object",
+            "required": [
+                "mobilenumber",
+                "password"
+            ],
+            "properties": {
+                "mobilenumber": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 4
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        },
+        "dto.RegisterRequestByUsername": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "firstname": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 4
+                },
+                "lastname": {
+                    "type": "string",
+                    "maxLength": 180,
+                    "minLength": 10
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "minLength": 4
+                }
+            }
+        },
         "handlers.User": {
             "type": "object",
             "required": [
@@ -226,7 +434,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "REST API for Khodro85.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-
 }
 
 func init() {

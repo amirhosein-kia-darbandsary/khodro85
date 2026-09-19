@@ -9,4 +9,7 @@ import (
 func User(router *gin.RouterGroup, cfg *config.Config) {
 	handler := handlers.NewUserHandler(cfg)
 	router.POST("/send-otp", handler.SendOtp)
+	router.POST("/login-by-username", handler.LoginByUserName)
+	router.POST("/register-by-username", handler.RegisterUser)
+	router.POST("/login-by-mobile", handler.LoginOrRegisterUser)
 }

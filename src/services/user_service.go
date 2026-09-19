@@ -253,3 +253,55 @@ func (s *UserService) RegisterLoginByMobileNumber(
 
 	return s.tokenService.CreateToken(tokenDTO)
 }
+
+func (s *UserService) LoginByUserName(req dto.LoginByUserNameRequest) (token string, err error) {
+	var user models.User
+	var hashedpassword string
+	exists, err := s.existsByUsername(req.UserName)
+	if err != nil {
+		return "", err
+	}
+	if exists {
+		hashedpassword, err = security.GeneratePasswordHash(req.Password)
+
+		if err != nil {
+			s.logger.Error(logging.Validation, logging.HashPassword, err.Error(), nil)
+			return "", err
+
+		}
+
+		err = s.database.
+			Where("username = ?,password=?", req.UserName, hashedpassword).
+			Preload("UserRoles", func(tx *gorm.DB) *gorm.DB {
+				return tx.Preload("Role")
+			}).
+			First(&user).Error
+
+		if err != nil {
+			return "", err
+		}
+
+		tokenDTO := TokenDto{
+			UserId:    user.ID,
+			FirstName: user.FirstName,
+			UserName:  user.Username,
+			Email:     user.Email,
+			LastName:  user.LastName,
+		}
+
+		if user.UserRoles != nil {
+			for _, userRole := range *user.UserRoles {
+				tokenDTO.Roles = append(
+					tokenDTO.Roles,
+					userRole.Role.Name,
+				)
+
+			}
+		}
+
+		return s.tokenService.CreateToken(tokenDTO)
+	}
+
+	return "", nil
+
+}

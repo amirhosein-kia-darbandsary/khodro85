@@ -58,3 +58,85 @@ func (h *UserHandler) SendOtp(ctx *gin.Context) {
 		base.GenerateBaseResponse(otp, true, 200),
 	)
 }
+
+// LoginUser godoc
+// @Summary      Login by User Name
+// @Description  Login to the service by LoginByUserNameRequest
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.LoginByUserNameRequest true "login request"
+// @Success      202 {object} base.BaseHttpResponse
+// @Failure      400 {object} base.BaseHttpResponse
+// @Failure      500 {object} base.BaseHttpResponse
+// @Router       /user/login-by-username/ [post]
+func (h *UserHandler) LoginByUserName(ctx *gin.Context) {
+	req := new(dto.LoginByUserNameRequest)
+	err := ctx.ShouldBindJSON(req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, base.GenerateBaseResponseWithValidationError(
+			nil, false, http.StatusBadRequest, err,
+		))
+		return
+	}
+	token, err := h.UserService.LoginByUserName(*req)
+	ctx.JSON(http.StatusOK, base.GenerateBaseResponse(token, true, http.StatusOK))
+}
+
+// RegisterUser godoc
+// @Summary      Register by User Name
+// @Description  Login to the service by RegisterRequestByUsername
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.RegisterRequestByUsername true "login request"
+// @Success      202 {object} base.BaseHttpResponse
+// @Failure      400 {object} base.BaseHttpResponse
+// @Failure      500 {object} base.BaseHttpResponse
+// @Router       /user/register-by-username/ [post]
+func (h *UserHandler) RegisterUser(ctx *gin.Context) {
+	req := new(dto.RegisterRequestByUsername)
+	err := ctx.ShouldBindJSON(req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, base.GenerateBaseResponseWithValidationError(
+			nil, false, http.StatusBadRequest, err,
+		))
+		return
+	}
+	err = h.UserService.RegisterUser(*req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError,
+			base.GenerateBaseResponseWithError(nil, false, http.StatusInternalServerError, err))
+	}
+
+	ctx.JSON(http.StatusOK, "Register has completed Login again")
+}
+
+// RegisterUser godoc
+// @Summary      Register/Login by User Name
+// @Description  Login to the service by LoginByMobileNumberRequest
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.LoginByMobileNumberRequest true "login request"
+// @Success      202 {object} base.BaseHttpResponse
+// @Failure      400 {object} base.BaseHttpResponse
+// @Failure      500 {object} base.BaseHttpResponse
+// @Router       /user/login-by-mobile/ [post]
+func (h *UserHandler) LoginOrRegisterUser(ctx *gin.Context) {
+	req := new(dto.LoginByMobileNumberRequest)
+	err := ctx.ShouldBindJSON(req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, base.GenerateBaseResponseWithValidationError(
+			nil, false, http.StatusBadRequest, err,
+		))
+		return
+	}
+
+	token, err := h.UserService.RegisterLoginByMobileNumber(*req)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError,
+			base.GenerateBaseResponseWithError(nil, false, http.StatusInternalServerError, err))
+	}
+	ctx.JSON(http.StatusOK, base.GenerateBaseResponse(token, true, http.StatusOK))
+}
